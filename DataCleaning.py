@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load the CSV file into a DataFrame
 df = pd.read_csv('cancer dataset.csv')
@@ -46,3 +47,26 @@ for col in X.columns:
     plt.close()  # Close the current figure to free memory
 
 print("Histograms saved successfully.")
+
+# Define pairs of columns for scatter plots
+column_pairs = [('radius_mean', 'texture_mean'), ('perimeter_mean', 'area_mean'), ('smoothness_mean', 'compactness_mean')]
+
+# Create scatter plots for each pair of columns
+for pair in column_pairs:
+    x_column, y_column = pair
+    plt.figure(figsize=(8, 6))
+    plt.scatter(X[x_column], X[y_column], color='skyblue')
+    plt.title('Scatter Plot of {} vs {}'.format(x_column, y_column))
+    plt.xlabel(x_column)
+    plt.ylabel(y_column)
+    plt.grid(True)
+    plt.show()
+
+# Calculate the correlation matrix
+corr_matrix = X.corr()
+
+# Create a heatmap
+plt.figure(figsize=(12, 10))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=.5)
+plt.title('Correlation Heatmap of Features')
+plt.show()
